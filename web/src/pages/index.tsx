@@ -1,23 +1,30 @@
-import { Link, useHistory } from 'umi';
+import { Link, history } from 'umi';
 import SignForm from '@/components/sign';
 import { login } from '@/services';
 import './index.less';
 import { message } from 'antd';
+import { useUser } from '@/store/user';
 
 export default function IndexPage() {
-  const history = useHistory();
+  const setUser = useUser((state) => state.setUser);
 
-  const jumpToHome = () => {
-    history.push('/home');
+  const jumpToArticle = () => {
+    history.push('/article');
   };
 
   const onLogin = async (username: string, password: string) => {
     try {
-      await login(username, password);
-      message.success('Success Login.');
-      jumpToHome();
-    } catch (e: any) {
-      message.error(e?.msg || 'login error.');
+      const user = await login(username, password);
+      setUser({
+        username: user.name,
+        ...user,
+      });
+      message.success('登录成功');
+      jumpToArticle();
+    } catch (e) {
+      if (e instanceof Error) {
+        message.error(e.message || '登录失败');
+      }
     }
   };
 
@@ -25,13 +32,13 @@ export default function IndexPage() {
     <div id="container">
       <div className="wrapper">
         <h1 className="title" style={{ margin: 50 }}>
-          Welcome
+          登录
         </h1>
-        <SignForm onAction={onLogin} buttonText="Log in" />
+        <SignForm onAction={onLogin} buttonText="登录" />
         <div className="login-to-register">
-          Or{' '}
+          没有账号？
           <Link to="/register" className="link-style">
-            register now!
+            去注册
           </Link>
         </div>
       </div>

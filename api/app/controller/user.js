@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const { Controller } = require('egg');
+const { Controller } = require("egg");
 
 class UserController extends Controller {
   // 注册
@@ -8,10 +8,10 @@ class UserController extends Controller {
     const { name, password } = this.ctx.request.body;
     const exists = await this.ctx.service.user.exist(name);
 
-    if (exists.length > 0) {
+    if (exists) {
       this.ctx.body = {
         status: 400,
-        msg: 'username is exists',
+        msg: "username is exists",
       };
       return;
     }
@@ -19,7 +19,7 @@ class UserController extends Controller {
     const res = await this.ctx.service.user.create({ name, password });
     this.ctx.body = {
       status: 0,
-      msg: 'ok',
+      msg: "ok",
       data: res,
     };
   }
@@ -27,17 +27,18 @@ class UserController extends Controller {
   // 登录
   async signIn() {
     const { name, password } = this.ctx.request.body;
-    const isLegal = await this.ctx.service.user.check(name, password);
+    const userInfo = await this.ctx.service.user.find(name, password);
 
-    if (isLegal.length > 0) {
+    if (userInfo.length > 0) {
       this.ctx.body = {
         status: 0,
-        msg: 'ok',
+        msg: "ok",
+        data: userInfo[0],
       };
     } else {
       this.ctx.body = {
         status: 400,
-        msg: 'wrong password',
+        msg: "wrong password",
       };
     }
   }

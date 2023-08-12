@@ -10,13 +10,6 @@ import {
   Tag,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { MenuArticle } from '@/models/menu-model/menu';
-import SearchContainer from '@/components/search';
-import {
-  FilterGroupId,
-  FilterKeyword,
-  FilterTitle,
-} from '@/models/filter-model/filter';
 import { deleteArticleBy, getArticles } from '@/services/article';
 import dayjs from 'dayjs';
 import { Link } from 'umi';
