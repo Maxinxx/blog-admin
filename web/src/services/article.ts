@@ -1,4 +1,4 @@
-import { HOST } from '@/constants';
+import { ArticleModel } from '@/types/article';
 import { request } from '@/utils/request';
 
 export function postArticle(
@@ -9,7 +9,7 @@ export function postArticle(
 ) {
   return request({
     method: 'post',
-    url: `${HOST}/article`,
+    url: '/api/article/create',
     data: {
       title,
       content,
@@ -20,22 +20,10 @@ export function postArticle(
   });
 }
 
-export function searchArticles(searchMap: Map<string, string[]>) {
-  const requestBody: any = {};
-  searchMap.forEach((value, key) => {
-    requestBody[key] = value;
-  });
-  return request({
-    method: 'post',
-    url: `${HOST}/article/search`,
-    data: requestBody,
-  });
-}
-
 export function deleteArticleBy(gid: string) {
   return request({
     method: 'post',
-    url: `${HOST}/article/delete`,
+    url: '/api/article/delete',
     data: {
       gid,
     },
@@ -51,7 +39,7 @@ export function updateArticle(
 ) {
   return request({
     method: 'post',
-    url: `${HOST}/article/update`,
+    url: '/api/article/update',
     data: {
       title,
       content,
@@ -62,22 +50,16 @@ export function updateArticle(
   });
 }
 
-export function getAllArticles() {
-  return request({
-    method: 'get',
-    url: `${HOST}/article`,
-    params: {
-      authorName: 'maxin',
-    },
+export async function  getArticles(params: Partial<Pick<ArticleModel, '_id' | 'tags' | 'title'>>): Promise<ArticleModel[]> {
+  const { _id, tags, title } = params;
+  const list =  await request({
+    method: 'post',
+    url: '/api/article/search',
+    data: {
+      _id,
+      tags,
+      title,
+    }
   });
-}
-
-export function getSomeArticles(params: any) {
-  return request({
-    method: 'get',
-    url: `${HOST}/article`,
-    params: {
-      ...params,
-    },
-  });
+  return list
 }

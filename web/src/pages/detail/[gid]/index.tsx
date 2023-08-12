@@ -1,4 +1,4 @@
-import { getSomeArticles } from '@/services/article';
+import { getArticles } from '@/services/article';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'umi';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +10,7 @@ const Detail: FC = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getSomeArticles({
+      const data = await getArticles({
         gid: gid,
       });
       const article: ArticleModel = data.article[0];

@@ -17,7 +17,7 @@ export function request(config: AxiosRequestConfig): Promise<any> {
     .then((res) => {
       const { status, msg, data } = res as Response;
       if (status !== 0) {
-        throw Error(msg);
+        throw new Error(msg);
       }
       return data;
     });
