@@ -1,12 +1,14 @@
-const Service = require('egg').Service;
+const Service = require("egg").Service;
 
 class UserService extends Service {
-  async exist(username) {
-    return await this.ctx.model.User.find({ name: username });
+  async exist(name) {
+    return await this.ctx.model.User.exists({ name });
   }
 
-  async check(username, password) {
-    return await this.ctx.model.User.find({ name: username, password });
+  async find(name, password) {
+    return await this.ctx.model.User.find({ name, password })
+      .select(["name", "avatar"])
+      .lean();
   }
 
   async create(params) {
@@ -16,9 +18,9 @@ class UserService extends Service {
     };
   }
 
-  async getUid(username) {
+  async getUid(name) {
     let uid;
-    const user = await this.ctx.model.User.find({ name: username });
+    const user = await this.ctx.model.User.find({ name });
     if (user.length > 0) {
       uid = user[0].id;
     }

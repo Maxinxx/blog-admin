@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
 
@@ -18,5 +18,5 @@ module.exports = app => {
     },
   });
 
-  return mongoose.model('User', UserSchema);
+  return mongoose.model("User", UserSchema);
 };

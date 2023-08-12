@@ -8,21 +8,19 @@ export default function Register() {
   const onRegister = async (username: string, password: string) => {
     try {
       await register(username, password);
-      message.success('Register Success.');
+      message.success('注册成功');
       history.push('/');
     } catch (e) {
       if (e instanceof Error) {
-        message.error(e.message || 'register error');
+        message.error(e.message || '注册失败');
       }
     }
   };
 
   return (
-    <div id="container">
-      <h1 className="title" style={{ marginBottom: 50 }}>
-        Register Now
-      </h1>
-      <SignForm onAction={onRegister} buttonText="Register" />
+    <div id="register-container">
+      <h1 style={{ margin: 50 }}>注册</h1>
+      <SignForm onAction={onRegister} buttonText="注册" />
     </div>
   );
 }

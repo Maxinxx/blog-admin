@@ -28,7 +28,7 @@ const SignForm: React.FC<SignFormProps> = (props: SignFormProps) => {
       >
         <Input
           prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Username"
+          placeholder="用户名"
         />
       </Form.Item>
       <Form.Item
@@ -38,7 +38,7 @@ const SignForm: React.FC<SignFormProps> = (props: SignFormProps) => {
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Password"
+          placeholder="密码"
         />
       </Form.Item>
 
