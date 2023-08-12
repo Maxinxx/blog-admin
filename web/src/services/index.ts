@@ -4,10 +4,10 @@ import { request } from '@/utils/request';
 export function login(username: string, password: string) {
   return request({
     method: 'post',
-    url: `${HOST}/signIn`,
+    url: 'api/signIn',
     data: {
       name: username,
-      password: password,
+      password: window.md5(password),
     },
   });
 }
@@ -15,10 +15,10 @@ export function login(username: string, password: string) {
 export function register(username: string, password: string) {
   return request({
     method: 'post',
-    url: `${HOST}/signUp`,
+    url: 'api/signUp',
     data: {
       name: username,
-      password: password,
+      password: window.md5(password),
     },
   });
 }

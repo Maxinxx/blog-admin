@@ -1,4 +1,4 @@
-const Service = require('egg').Service;
+const Service = require("egg").Service;
 
 class ArticleService extends Service {
   async create(article) {
@@ -15,11 +15,14 @@ class ArticleService extends Service {
     };
   }
 
-  async search(value) {
-    const res = await this.ctx.model.Article.find(value);
-    return {
-      res,
+  async search(query) {
+    const filter = {
+      ...(query._id?.length > 0 ? { _id: { $in: query._id } } : {}),
+      ...(query.title?.length > 0 ? { title: { $in: query.title } } : {}),
+      ...(query.tags?.length > 0 ? { tags: { $in: query.tags } } : {}),
     };
+    const res = await this.ctx.model.Article.find(filter).lean();
+    return res;
   }
 
   async getByUid(value) {
@@ -37,16 +40,19 @@ class ArticleService extends Service {
   }
 
   async update(gid, value) {
-    const res = await this.ctx.model.Article.updateOne({ _id: gid }, { ...value }).exec()
-      .then(result => {
+    const res = await this.ctx.model.Article.updateOne(
+      { _id: gid },
+      { ...value }
+    )
+      .exec()
+      .then((result) => {
         console.log(`success: ${result}`);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`error: ${error}`);
       });
     return { res };
   }
 }
-
 
 module.exports = ArticleService;

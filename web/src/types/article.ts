@@ -1,4 +1,4 @@
-interface ArticleModel {
+export interface ArticleModel {
   title: string;
   tags: string[];
   createTime: number;

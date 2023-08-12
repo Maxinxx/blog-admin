@@ -2,14 +2,18 @@ import SignForm from '@/components/sign';
 import './index.less';
 import { register } from '@/services';
 import { message } from 'antd';
+import { history } from 'umi';
 
 export default function Register() {
   const onRegister = async (username: string, password: string) => {
     try {
       await register(username, password);
       message.success('Register Success.');
-    } catch (e: any) {
-      message.error(e?.msg || 'register error.');
+      history.push('/');
+    } catch (e) {
+      if (e instanceof Error) {
+        message.error(e.message || 'register error');
+      }
     }
   };
 

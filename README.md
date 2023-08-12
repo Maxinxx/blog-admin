@@ -7,10 +7,15 @@
 
 ## 项目启动
 
+### 环境准备
+
+- **Node 版本**：16
+
 ### Api
 
 #### 安装依赖
 ```bash
+cd api
 yarn
 ```
 
@@ -23,6 +28,7 @@ yarn dev
 
 #### 安装依赖
 ```bash
+cd web
 yarn
 ```
 

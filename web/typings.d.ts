@@ -8,3 +8,6 @@ declare module '*.svg' {
   const url: string;
   export default url;
 }
+interface Window {
+  md5: (value: string, token?: string) => string;
+}

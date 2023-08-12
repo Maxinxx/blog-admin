@@ -1,5 +1,14 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, message, Popconfirm, Space, Table, Tag } from 'antd';
+import {
+  Button,
+  Form,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Table,
+  Tag,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { MenuArticle } from '@/models/menu-model/menu';
 import SearchContainer from '@/components/search';
@@ -8,39 +17,19 @@ import {
   FilterKeyword,
   FilterTitle,
 } from '@/models/filter-model/filter';
-import {
-  deleteArticleBy,
-  getAllArticles,
-  searchArticles,
-} from '@/services/article';
+import { deleteArticleBy, getArticles } from '@/services/article';
 import dayjs from 'dayjs';
 import { Link } from 'umi';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-cn';
-import ReactMarkdown from 'react-markdown';
+import { ArticleModel } from '@/types/article';
 
 const Article: FC = () => {
-  const [articleData, setArticleData] = useState([] as ArticleModel[]);
-  dayjs.extend(relativeTime);
-  dayjs.locale('zh-cn');
-
+  const [articleData, setArticleData] = useState<ArticleModel[]>([]);
+  const [form] = Form.useForm();
   useEffect(() => {
     const getData = async () => {
-      const data = await getAllArticles();
-      const articles: ArticleModel[] = data.article;
-      const dataSource = articles
-        .sort((a, b) => b.createTime - a.createTime)
-        .map((item, index) => {
-          return {
-            key: index + 1,
-            createDisplayTime: dayjs(item.createTime).format(
-              'YYYY年MM月DD日 HH:mm:ss',
-            ),
-            updateDisplayTime: dayjs(item.updateTime).fromNow(),
-            ...item,
-          };
-        });
-      setArticleData(dataSource);
+      const articles = await getArticles({});
+      setArticleData(articles);
     };
     getData();
   }, []);
@@ -55,29 +44,26 @@ const Article: FC = () => {
     }
   };
 
-  const handleSearch = async (map: Map<string, string[]>) => {
+  const handleSearch = async () => {
     try {
-      const res = await searchArticles(map);
-      debugger;
+      const params = form.getFieldsValue();
+      const res = await getArticles(params);
       setArticleData(res);
-    } catch (e: any) {}
+    } catch (e: any) {
+      message.error('查询出错');
+    }
   };
 
   const columns: ColumnsType<ArticleModel> = [
     {
-      title: '标题',
-      dataIndex: 'title',
-      key: 'title',
-      render: (text, record) => (
-        <Link to={`/detail/${record._id}/`} className="link-style">
-          <ReactMarkdown skipHtml={true}>{text}</ReactMarkdown>
-        </Link>
-      ),
-    },
-    {
       title: '文章ID',
       dataIndex: '_id',
       key: '_id',
+    },
+    {
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: '标签',
@@ -85,7 +71,7 @@ const Article: FC = () => {
       dataIndex: 'keywords',
       render: (_, { tags }) => (
         <>
-          {tags.map((tag) => {
+          {tags?.map((tag) => {
             let color;
             switch (tag.length % 3) {
               case 0: {
@@ -112,13 +98,15 @@ const Article: FC = () => {
     },
     {
       title: '发表时间',
-      dataIndex: 'createDisplayTime',
-      key: 'createDisplayTime',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (value: number) => dayjs(value).format('YYYY年MM月DD日 HH:mm:ss'),
     },
     {
       title: '更新时间',
-      dataIndex: 'updateDisplayTime',
-      key: 'updateDisplayTime',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      render: (value: number) => dayjs(value).format('YYYY年MM月DD日 HH:mm:ss'),
     },
     {
       title: '操作',
@@ -147,15 +135,44 @@ const Article: FC = () => {
 
   return (
     <>
-      <div>
-        <SearchContainer
-          items={[FilterGroupId, FilterKeyword, FilterTitle]}
-          key={MenuArticle.route}
-          onSearch={handleSearch}
-        />
-        <div style={{ height: 50 }}></div>
-        <Table columns={columns} dataSource={articleData} />
-      </div>
+      <Form
+        form={form}
+        layout="inline"
+        style={{
+          marginBottom: 20,
+        }}
+      >
+        <Form.Item label="文章 ID" name="_id">
+          <Select
+            style={{ width: 300 }}
+            mode="tags"
+            tokenSeparators={[',']}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item label="标题" name="title">
+          <Select
+            style={{ width: 300 }}
+            mode="tags"
+            tokenSeparators={[',']}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item label="标签" name="tags">
+          <Select
+            style={{ width: 300 }}
+            mode="tags"
+            tokenSeparators={[',']}
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={handleSearch}>
+            查询
+          </Button>
+        </Form.Item>
+      </Form>
+      <Table columns={columns} dataSource={articleData} />
     </>
   );
 };

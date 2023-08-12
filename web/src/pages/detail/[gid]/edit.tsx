@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useState } from 'react';
 import { Input, Button, Modal, Select, message, Row, Col } from 'antd';
 import './edit.less';
-import { getSomeArticles, updateArticle } from '@/services/article';
+import { getArticles, updateArticle } from '@/services/article';
 import TextArea from 'antd/es/input/TextArea';
 import { useHistory, useParams } from 'umi';
 import ReactMarkdown from 'react-markdown';
@@ -17,7 +17,7 @@ const Edit: FC = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getSomeArticles({
+      const data = await getArticles({
         gid: gid,
       });
       setArticle({ ...data.article[0] });
