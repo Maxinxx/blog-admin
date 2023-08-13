@@ -1,34 +1,36 @@
 import { FC, useEffect } from 'react';
 import { useState } from 'react';
-import { Input, Button, Modal, Select, message, Row, Col } from 'antd';
-import './edit.less';
-import { getArticles, updateArticle } from '@/services/article';
+import { Input, Button, Modal, Select, message, Row, Col, Spin } from 'antd';
+import { detail, updateArticle } from '@/services/article';
 import TextArea from 'antd/es/input/TextArea';
 import { useHistory, useParams } from 'umi';
 import ReactMarkdown from 'react-markdown';
-import ReactDom from 'react-dom';
+import { ArticleModel } from '@/types/article';
+import './edit.less';
 
 const Edit: FC = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [article, setArticle] = useState({} as ArticleModel);
+  const [article, setArticle] = useState<ArticleModel>();
   const { gid } = useParams<{ gid: string }>();
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getArticles({
-        gid: gid,
-      });
-      setArticle({ ...data.article[0] });
+      const data = await detail(gid);
+      setArticle(data);
     };
     getData();
-  }, []);
+  }, [gid]);
 
   const jumpToArticle = () => {
     history.push('/article');
   };
+
   const handlePost = async () => {
+    if (!article) {
+      return;
+    }
     setConfirmLoading(true);
     try {
       await updateArticle(
@@ -47,6 +49,11 @@ const Edit: FC = () => {
       setConfirmLoading(false);
     }
   };
+  console.log('🚀 ~ file: edit.tsx:54 ~ article:', article);
+
+  if (!article) {
+    return <Spin></Spin>;
+  }
 
   return (
     <>
@@ -54,7 +61,6 @@ const Edit: FC = () => {
         <Col span={12}>
           <Input
             className="input-bottom-margin"
-            bordered={false}
             value={article.title}
             onChange={(e) =>
               setArticle({
@@ -68,7 +74,6 @@ const Edit: FC = () => {
             className="input-bottom-margin"
             rows={25}
             value={article.content}
-            bordered={false}
             onChange={(e) =>
               setArticle({
                 ...article,

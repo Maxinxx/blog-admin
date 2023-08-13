@@ -18,7 +18,7 @@ class ArticleService extends Service {
   async search(query) {
     const filter = {
       ...(query._id?.length > 0 ? { _id: { $in: query._id } } : {}),
-      ...(query.title?.length > 0 ? { title: { $in: query.title } } : {}),
+      ...(query.title?.length > 0 ? { title: { $regex: query.title } } : {}),
       ...(query.tags?.length > 0 ? { tags: { $in: query.tags } } : {}),
     };
     const res = await this.ctx.model.Article.find(filter).lean();
@@ -33,10 +33,8 @@ class ArticleService extends Service {
   }
 
   async getByGid(gid) {
-    const res = await this.ctx.model.Article.find({ _id: gid });
-    return {
-      res,
-    };
+    const res = await this.ctx.model.Article.findOne({ _id: gid });
+    return res;
   }
 
   async update(gid, value) {

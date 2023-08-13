@@ -58,50 +58,20 @@ class ArticleController extends Controller {
       tags,
       updateTime,
     });
-    if (result) {
-      this.ctx.body = {
-        status: 0,
-        msg: "ok",
-      };
-    }
+    this.ctx.body = {
+      status: 0,
+      msg: "ok",
+      data: result,
+    };
   }
 
-  async getAll() {
-    const { authorName, gid } = this.ctx.request.query;
-    let articles;
-    if (gid) {
-      articles = await this.ctx.service.article.getByGid(gid);
-    } else if (authorName) {
-      const uid = await this.ctx.service.user.getUid(authorName);
-      if (!uid) {
-        this.ctx.body = {
-          status: 400,
-          msg: "user not found",
-        };
-        return;
-      }
-      articles = await this.ctx.service.article.getByUid(uid);
-    } else {
-      this.ctx.body = {
-        status: 400,
-        msg: "query error",
-      };
-      return;
-    }
-
-    if (articles) {
-      this.ctx.body = {
-        status: 0,
-        msg: "ok",
-        data: {
-          article: [...articles.res],
-        },
-      };
-      return;
-    }
+  async detail() {
+    const { gid } = this.ctx.request.body;
+    const result = await this.ctx.service.article.getByGid(gid);
     this.ctx.body = {
-      status: 400,
-      msg: "article not found",
+      status: 0,
+      msg: "ok",
+      data: result,
     };
   }
 }

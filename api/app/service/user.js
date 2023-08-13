@@ -26,6 +26,16 @@ class UserService extends Service {
     }
     return uid;
   }
+
+  userInfo() {
+    const token = this.ctx.cookies.get("token");
+    let res = {};
+    // 解码token
+    if (token) {
+      res = this.ctx.app.jwt.verify(token, this.ctx.app.config.jwt.secret);
+    }
+    return res;
+  }
 }
 
 module.exports = UserService;

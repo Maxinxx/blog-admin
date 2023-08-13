@@ -63,3 +63,15 @@ export async function  getArticles(params: Partial<Pick<ArticleModel, '_id' | 't
   });
   return list
 }
+
+
+export async function  detail(gid: string): Promise<ArticleModel> {
+  const res =  await request({
+    method: 'post',
+    url: '/api/article/detail',
+    data: {
+      gid,
+    }
+  });
+  return res
+}
