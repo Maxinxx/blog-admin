@@ -33,6 +33,10 @@ class UserService extends Service {
     // 解码token
     if (token) {
       res = this.ctx.app.jwt.verify(token, this.ctx.app.config.jwt.secret);
+      res = {
+        ...res,
+        uid: res._id,
+      };
     }
     return res;
   }

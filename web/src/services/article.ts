@@ -1,22 +1,17 @@
 import { ArticleModel } from '@/types/article';
 import { request } from '@/utils/request';
 
-export function postArticle(
+export function postArticle(params: {
   title: string,
   content: string,
   tags: string[],
-  createTime: number,
-) {
+  authorId: string,
+
+}) {
   return request({
     method: 'post',
     url: '/api/article/create',
-    data: {
-      title,
-      content,
-      tags,
-      createTime,
-      authorName: 'maxin',
-    },
+    data: params,
   });
 }
 
@@ -34,7 +29,6 @@ export function updateArticle(
   title: string,
   content: string,
   tags: string[],
-  updateTime: number,
   gid: string,
 ) {
   return request({
@@ -44,7 +38,6 @@ export function updateArticle(
       title,
       content,
       tags,
-      updateTime,
       gid,
     },
   });

@@ -41,15 +41,8 @@ class ArticleService extends Service {
     const res = await this.ctx.model.Article.updateOne(
       { _id: gid },
       { ...value }
-    )
-      .exec()
-      .then((result) => {
-        console.log(`success: ${result}`);
-      })
-      .catch((error) => {
-        console.log(`error: ${error}`);
-      });
-    return { res };
+    );
+    return res;
   }
 }
 

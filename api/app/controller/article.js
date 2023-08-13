@@ -4,10 +4,7 @@ const { Controller } = require("egg");
 
 class ArticleController extends Controller {
   async create() {
-    const { title, content, tags, createTime, authorName } =
-      this.ctx.request.body;
-    const authorId = await this.ctx.service.user.getUid(authorName);
-    const article = { title, content, tags, createTime, authorId };
+    const article = this.ctx.request.body;
     const gid = await this.ctx.service.article.create(article);
     if (gid) {
       this.ctx.body = {
@@ -42,7 +39,7 @@ class ArticleController extends Controller {
   }
 
   async update() {
-    const { title, content, tags, updateTime, gid } = this.ctx.request.body;
+    const { title, content, tags, gid } = this.ctx.request.body;
     const targetArticle = await this.ctx.service.article.getByGid(gid);
     if (!targetArticle) {
       this.ctx.body = {
@@ -56,7 +53,6 @@ class ArticleController extends Controller {
       title,
       content,
       tags,
-      updateTime,
     });
     this.ctx.body = {
       status: 0,

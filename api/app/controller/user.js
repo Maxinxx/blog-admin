@@ -38,7 +38,10 @@ class UserController extends Controller {
       this.ctx.body = {
         status: 0,
         msg: "ok",
-        data: userInfo[0],
+        data: {
+          ...userInfo[0],
+          uid: userInfo[0]._id,
+        },
       };
     } else {
       this.ctx.body = {

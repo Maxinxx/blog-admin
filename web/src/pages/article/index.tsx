@@ -32,9 +32,11 @@ const Article: FC = () => {
     try {
       await deleteArticleBy(gid);
       message.success('删除成功');
-      window.location.reload();
-    } catch (e: any) {
-      message.error(e?.msg || '删除失败');
+      handleSearch();
+    } catch (e) {
+      if (e instanceof Error) {
+        message.error(e.message || '删除失败');
+      }
     }
   };
 
@@ -43,8 +45,10 @@ const Article: FC = () => {
       const params = form.getFieldsValue();
       const res = await getArticles(params);
       setArticleData(res);
-    } catch (e: any) {
-      message.error('查询出错');
+    } catch (e) {
+      if (e instanceof Error) {
+        message.error(e.message || '查询出错');
+      }
     }
   };
 
@@ -58,6 +62,9 @@ const Article: FC = () => {
       title: '标题',
       dataIndex: 'title',
       key: 'title',
+      render: (_, record) => {
+        return <Link to={`/article/detail/${record._id}`}>{record.title}</Link>;
+      },
     },
     {
       title: '标签',
@@ -92,14 +99,14 @@ const Article: FC = () => {
     },
     {
       title: '发表时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (value: number) => dayjs(value).format('YYYY年MM月DD日 HH:mm:ss'),
     },
     {
       title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (value: number) => dayjs(value).format('YYYY年MM月DD日 HH:mm:ss'),
     },
     {
@@ -161,7 +168,7 @@ const Article: FC = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Table columns={columns} dataSource={articleData} />
+      <Table columns={columns} dataSource={articleData} rowKey="_id" />
     </>
   );
 };
