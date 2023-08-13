@@ -1,6 +1,6 @@
 import MyHeader from '@/components/header';
-import { Button, Layout, Menu, MenuProps, Result } from 'antd';
-import { FC } from 'react';
+import { Button, Layout, Menu, MenuProps, Result, Spin } from 'antd';
+import { FC, useEffect, useState } from 'react';
 import {
   UserOutlined,
   CommentOutlined,
@@ -17,6 +17,7 @@ import {
 import React from 'react';
 import { history, useHistory } from 'umi';
 import { useUser } from '@/store/user';
+import { userInfo } from '@/services';
 
 const { Sider, Content } = Layout;
 
@@ -42,8 +43,32 @@ const items: MenuProps['items'] = [
 // 判断用户是否登录等权限信息
 const AuthProvider: FC = (props) => {
   const { children } = props;
-  const username = useUser((state) => state.username);
-  const isLogin = Boolean(username);
+  const [isLogin, setIsLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const setUser = useUser((state) => state.setUser);
+
+  useEffect(() => {
+    userInfo().then((user) => {
+      setLoading(false);
+      const { name } = user;
+      const loginSuccess = Boolean(name);
+      if (loginSuccess) {
+        setIsLogin(true);
+        setUser({
+          username: name,
+          ...user,
+        });
+      } else {
+        setIsLogin(false);
+      }
+    });
+  }, []);
+
+  if (loading) {
+    return <Spin></Spin>;
+  }
+
   return isLogin ? (
     children
   ) : (

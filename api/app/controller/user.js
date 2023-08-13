@@ -30,6 +30,11 @@ class UserController extends Controller {
     const userInfo = await this.ctx.service.user.find(name, password);
 
     if (userInfo.length > 0) {
+      // 生成签名
+      const token = this.app.jwt.sign(userInfo[0], this.app.config.jwt.secret, {
+        expiresIn: "7d",
+      });
+      this.ctx.cookies.set("token", token);
       this.ctx.body = {
         status: 0,
         msg: "ok",
@@ -41,6 +46,17 @@ class UserController extends Controller {
         msg: "wrong password",
       };
     }
+  }
+
+  // 用户信息
+  async userInfo() {
+    const userInfo = this.ctx.service.user.userInfo() || {};
+
+    this.ctx.body = {
+      status: 0,
+      msg: "ok",
+      data: userInfo,
+    };
   }
 }
 

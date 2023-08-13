@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import {
   Button,
   Form,
+  Input,
   message,
   Popconfirm,
   Select,
@@ -106,7 +107,7 @@ const Article: FC = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Link to={`/detail/${record._id}/edit`} className="link-style">
+          <Link to={`/article/edit/${record._id}`} className="link-style">
             编辑
           </Link>
 
@@ -144,12 +145,7 @@ const Article: FC = () => {
           />
         </Form.Item>
         <Form.Item label="标题" name="title">
-          <Select
-            style={{ width: 300 }}
-            mode="tags"
-            tokenSeparators={[',']}
-            allowClear
-          />
+          <Input style={{ width: 300 }} allowClear />
         </Form.Item>
         <Form.Item label="标签" name="tags">
           <Select
