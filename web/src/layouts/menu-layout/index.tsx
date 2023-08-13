@@ -1,44 +1,26 @@
 import MyHeader from '@/components/header';
 import { Button, Layout, Menu, MenuProps, Result, Spin } from 'antd';
 import { FC, useEffect, useState } from 'react';
-import {
-  UserOutlined,
-  CommentOutlined,
-  FileSearchOutlined,
-  FileAddOutlined,
-} from '@ant-design/icons';
-import {
-  MenuModel,
-  MenuUser,
-  MenuArticle,
-  MenuComment,
-  MenuCreateArticle,
-} from '@/models/menu-model/menu';
-import React from 'react';
+import { FileSearchOutlined, FileAddOutlined } from '@ant-design/icons';
+import { MenuArticle } from '@/models/menu-model/menu';
 import { history, useHistory } from 'umi';
 import { useUser } from '@/store/user';
 import { userInfo } from '@/services';
 
 const { Sider, Content } = Layout;
 
-// 菜单列表
-const siderItemList: MenuModel[] = [
-  MenuArticle,
-  MenuComment,
-  MenuUser,
-  MenuCreateArticle,
+const menus: MenuProps['items'] = [
+  {
+    key: '/article',
+    icon: <FileSearchOutlined />,
+    label: '文章',
+  },
+  {
+    key: '/post',
+    icon: <FileAddOutlined />,
+    label: '发文',
+  },
 ];
-
-const items: MenuProps['items'] = [
-  UserOutlined,
-  FileSearchOutlined,
-  CommentOutlined,
-  FileAddOutlined,
-].map((icon, index) => ({
-  key: siderItemList[index].route,
-  icon: React.createElement(icon),
-  label: siderItemList[index].description,
-}));
 
 // 判断用户是否登录等权限信息
 const AuthProvider: FC = (props) => {
@@ -101,7 +83,7 @@ const MenuLayout: FC = (props) => {
               theme="dark"
               mode="inline"
               defaultSelectedKeys={[MenuArticle.route]}
-              items={items}
+              items={menus}
             />
           </Sider>
           <Content style={{ margin: '16px 16px' }}>{children}</Content>
