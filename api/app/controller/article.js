@@ -5,7 +5,11 @@ const { Controller } = require("egg");
 class ArticleController extends Controller {
   async create() {
     const article = this.ctx.request.body;
-    const gid = await this.ctx.service.article.create(article);
+    const { _id: uid } = this.ctx.state.user;
+    const gid = await this.ctx.service.article.create({
+      ...article,
+      authorId: uid,
+    });
     if (gid) {
       this.ctx.body = {
         status: 0,

@@ -5,8 +5,6 @@ export function postArticle(params: {
   title: string,
   content: string,
   tags: string[],
-  authorId: string,
-
 }) {
   return request({
     method: 'post',
