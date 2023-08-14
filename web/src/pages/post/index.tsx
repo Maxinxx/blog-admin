@@ -4,22 +4,15 @@ import { postArticle, updateArticle } from '@/services/article';
 import { history, useParams } from 'umi';
 import { ArticleModel } from '@/types/article';
 import ArticleEdit from '@/components/article-edit';
-import { useUser } from '@/store/user';
 
 const Post: FC = () => {
-  const { gid } = useParams<{ gid: string }>();
-  const uid = useUser((state) => state.uid);
-
   const jumpToArticle = () => {
     history.push('/article');
   };
 
-  const handlePost = async (article: ArticleModel) => {
+  const handlePost = async (article: Omit<ArticleModel, '_id'>) => {
     try {
-      await postArticle({
-        ...article,
-        authorId: uid,
-      });
+      await postArticle(article);
       message.success('创建成功');
       jumpToArticle();
     } catch (e) {
