@@ -43,11 +43,19 @@ class UserService extends Service {
 
   async search(query) {
     const filter = {
+      ...(query.uid ? { _id: query.uid } : {}),
       ...(query.name ? { name: { $regex: query.name } } : {}),
       ...(query.age ? { age: query.age } : {}),
       ...(query.gender ? { gender: query.gender } : {}),
     };
     const res = await this.ctx.model.User.find(filter)
+      .select(["name", "age", "gender", "avatar", "updatedAt", "createdAt"])
+      .lean();
+    return res;
+  }
+
+  async detail(id) {
+    const res = await this.ctx.model.User.findById(id)
       .select(["name", "age", "gender", "avatar", "updatedAt", "createdAt"])
       .lean();
     return res;

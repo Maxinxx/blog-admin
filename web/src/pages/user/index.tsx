@@ -5,13 +5,18 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import { User } from '@/types/user';
 import { getUsers } from '@/services/user';
+import qs from 'qs';
 
 const Users: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [form] = Form.useForm();
   useEffect(() => {
+    const query = qs.parse(location.search.slice(1)) || {};
+    const uid = query.uid as string;
     const getData = async () => {
-      const data = await getUsers({});
+      const data = await getUsers({
+        ...(uid ? { uid } : {}),
+      });
       setUsers(data);
     };
     getData();

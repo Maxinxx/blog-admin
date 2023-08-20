@@ -1,10 +1,9 @@
-import SignForm from '@/components/sign';
-import './index.less';
 import { register } from '@/services';
 import { Button, Form, Input, InputNumber, Select, message } from 'antd';
 import { history } from 'umi';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { User } from '@/types/user';
+import './index.less';
 
 export default function Register() {
   const onRegister = async (values: Omit<User, 'uid'>) => {

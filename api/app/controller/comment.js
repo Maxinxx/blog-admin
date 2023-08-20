@@ -5,7 +5,11 @@ const { Controller } = require("egg");
 class CommentController extends Controller {
   async create() {
     const comment = this.ctx.request.body;
-    const commentId = await this.ctx.service.comment.create(comment);
+    const { _id: uid } = this.ctx.state.user;
+    const commentId = await this.ctx.service.comment.create({
+      ...comment,
+      uid,
+    });
     this.ctx.body = {
       status: 0,
       msg: "ok",
