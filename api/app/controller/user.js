@@ -5,7 +5,7 @@ const { Controller } = require("egg");
 class UserController extends Controller {
   // 注册
   async signUp() {
-    const { name, password } = this.ctx.request.body;
+    const { name, ...restParams } = this.ctx.request.body;
     const exists = await this.ctx.service.user.exist(name);
 
     if (exists) {
@@ -16,7 +16,7 @@ class UserController extends Controller {
       return;
     }
 
-    const res = await this.ctx.service.user.create({ name, password });
+    const res = await this.ctx.service.user.create({ name, ...restParams });
     this.ctx.body = {
       status: 0,
       msg: "ok",
@@ -59,6 +59,16 @@ class UserController extends Controller {
       status: 0,
       msg: "ok",
       data: userInfo,
+    };
+  }
+
+  async search() {
+    const query = this.ctx.request.body;
+    const users = await this.ctx.service.user.search(query);
+    this.ctx.body = {
+      status: 0,
+      msg: "ok",
+      data: users,
     };
   }
 }

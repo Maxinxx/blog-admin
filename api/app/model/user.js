@@ -13,10 +13,15 @@ module.exports = (app) => {
         type: String,
         required: true,
       },
-      type: {
+      age: {
         type: String,
-        required: false,
+        required: true,
       },
+      gender: {
+        type: String,
+        required: true,
+      },
+      avatar: String,
       // 将更新时间和创建时间存为 unix 时间戳
       createdAt: Number,
       updatedAt: Number,

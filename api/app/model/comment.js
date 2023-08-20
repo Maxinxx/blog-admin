@@ -4,17 +4,17 @@ module.exports = (app) => {
 
   const CommentSchema = new Schema(
     {
-      authorId: {
-        type: Number,
+      uid: {
+        type: String,
         required: true,
       },
       gid: {
-        type: Number,
+        type: String,
         required: true,
       },
       content: {
         type: String,
-        required: false,
+        required: true,
       },
       // 将更新时间和创建时间存为 unix 时间戳
       createdAt: Number,

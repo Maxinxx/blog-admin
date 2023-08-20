@@ -40,6 +40,18 @@ class UserService extends Service {
     }
     return res;
   }
+
+  async search(query) {
+    const filter = {
+      ...(query.name ? { name: { $regex: query.name } } : {}),
+      ...(query.age ? { age: query.age } : {}),
+      ...(query.gender ? { gender: query.gender } : {}),
+    };
+    const res = await this.ctx.model.User.find(filter)
+      .select(["name", "age", "gender", "avatar", "updatedAt", "createdAt"])
+      .lean();
+    return res;
+  }
 }
 
 module.exports = UserService;
