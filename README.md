@@ -32,6 +32,13 @@ cd api
 yarn
 ```
 
+#### 创建本地 env 文件
+api 目录下面创建 .env 文件，并且在其中指定 MONGO_URL 环境变量，否则无法连接 Mongo 服务器，如：
+
+```bash
+MONGO_URL=mongodb+srv://account:password@xxx
+```
+
 #### 启动服务
 ```bash
 yarn dev
