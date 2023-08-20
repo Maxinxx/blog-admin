@@ -1,12 +1,10 @@
 /* eslint valid-jsdoc: "off" */
 
-'use strict';
+"use strict";
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
-module.exports = appInfo => {
-  return {
-    keys: 'dev_1111',
-  };
+module.exports = () => {
+  return {};
 };

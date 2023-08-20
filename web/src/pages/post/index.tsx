@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { message } from 'antd';
-import { postArticle, updateArticle } from '@/services/article';
-import { history, useParams } from 'umi';
+import { postArticle } from '@/services/article';
+import { history } from 'umi';
 import { ArticleModel } from '@/types/article';
 import ArticleEdit from '@/components/article-edit';
 
