@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import { Comment } from '@/types/comment';
 import { getComments } from '@/services/comment';
+import { Link } from 'umi';
 
 const Comments: FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
@@ -44,11 +45,15 @@ const Comments: FC = () => {
       title: '文章 ID',
       key: 'gid',
       dataIndex: 'gid',
+      render: (value: string) => (
+        <Link to={`/article/detail/${value}`}>{value}</Link>
+      ),
     },
     {
       title: '用户 ID',
       key: 'uid',
       dataIndex: 'uid',
+      render: (value: string) => <Link to={`/user?uid=${value}`}>{value}</Link>,
     },
     {
       title: '创建时间',

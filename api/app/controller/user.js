@@ -71,6 +71,16 @@ class UserController extends Controller {
       data: users,
     };
   }
+
+  async detail() {
+    const { uid } = this.ctx.request.body;
+    const user = await this.ctx.service.user.detail(uid);
+    this.ctx.body = {
+      status: 0,
+      msg: "ok",
+      data: user,
+    };
+  }
 }
 
 module.exports = UserController;

@@ -3,4 +3,5 @@ export interface Comment {
   uid: string;
   content: string;
   gid: string;
+  createdAt: number;
 }

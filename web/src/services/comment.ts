@@ -13,7 +13,7 @@ export async function getComments(
 }
 
 export async function createComment(
-  params: Omit<Comment, '_id'>,
+  params: Omit<Comment, '_id' | 'uid'>,
 ): Promise<void> {
   const list = await request({
     method: 'post',

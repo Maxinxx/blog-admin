@@ -12,6 +12,7 @@ module.exports = (app) => {
   router.post("/signIn", controller.user.signIn);
   router.post("/userInfo", controller.user.userInfo);
   router.post("/user/search", controller.user.search);
+  router.post("/user/detail", controller.user.detail);
 
   // 文章相关接口
   router.post("/article/create", controller.article.create);
