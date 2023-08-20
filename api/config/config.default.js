@@ -2,6 +2,7 @@
 
 "use strict";
 
+require("dotenv").config();
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -27,7 +28,7 @@ module.exports = (appInfo) => {
     },
     mongoose: {
       client: {
-        url: "mongodb+srv://onechunlin1:admin@cluster0.fayspua.mongodb.net/blog",
+        url: process.env.MONGO_URL,
         options: {},
       },
     },
