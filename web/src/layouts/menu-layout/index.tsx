@@ -1,7 +1,12 @@
 import MyHeader from '@/components/header';
 import { Button, Layout, Menu, MenuProps, Result, Spin } from 'antd';
 import { FC, useEffect, useState } from 'react';
-import { FileSearchOutlined, FileAddOutlined } from '@ant-design/icons';
+import {
+  FileSearchOutlined,
+  FileAddOutlined,
+  UserOutlined,
+  CommentOutlined,
+} from '@ant-design/icons';
 import { MenuArticle } from '@/models/menu-model/menu';
 import { history, useHistory } from 'umi';
 import { useUser } from '@/store/user';
@@ -14,6 +19,16 @@ const menus: MenuProps['items'] = [
     key: '/article',
     icon: <FileSearchOutlined />,
     label: '文章',
+  },
+  {
+    key: '/comment',
+    icon: <CommentOutlined />,
+    label: '评论',
+  },
+  {
+    key: '/user',
+    icon: <UserOutlined />,
+    label: '用户',
   },
   {
     key: '/post',
